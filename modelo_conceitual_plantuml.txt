@@ -1,0 +1,228 @@
+@startuml
+' Diagrama ER - Locadora de Jogos de Tabuleiro (Versão Aprimorada)
+
+entity "Lojas" as L {
+  +id_loja : int <<PK>>
+  nome_loja : varchar
+  endereco : text
+  telefone : varchar
+}
+
+entity "Cargos" as Cg {
+  +id_cargo : int <<PK>>
+  nome_cargo : varchar
+  descricao : text
+}
+
+entity "Funcionarios" as F {
+  +id_funcionario : int <<PK>>
+  id_loja : int <<FK>>
+  id_cargo : int <<FK>>
+  nome_completo : varchar
+  cpf : varchar
+  data_contratacao : date
+  salario : numeric
+}
+
+entity "Planos_Assinatura" as P {
+  +id_plano : int <<PK>>
+  nome_plano : varchar
+  preco_mensal : numeric
+  limite_alugueis_simultaneos : int
+  desconto_percentual : numeric
+}
+
+entity "Clientes" as Cl {
+  +id_cliente : int <<PK>>
+  id_plano : int <<FK>>
+  nome_completo : varchar
+  email : varchar
+  cpf : varchar
+  data_nascimento : date
+  data_cadastro : timestamp
+}
+
+entity "Enderecos_Cliente" as E {
+  +id_endereco : int <<PK>>
+  id_cliente : int <<FK>>
+  logradouro : varchar
+  numero : varchar
+  complemento : varchar
+  bairro : varchar
+  cidade : varchar
+  estado : char
+  cep : varchar
+  principal : boolean
+}
+
+entity "Telefones_Cliente" as T {
+  +id_telefone : int <<PK>>
+  id_cliente : int <<FK>>
+  numero : varchar
+  tipo : varchar
+}
+
+entity "Editoras" as Ed {
+  +id_editora : int <<PK>>
+  nome_editora : varchar
+}
+
+entity "Designers" as D {
+  +id_designer : int <<PK>>
+  nome_designer : varchar
+}
+
+entity "Categorias" as Cat {
+  +id_categoria : int <<PK>>
+  nome_categoria : varchar
+}
+
+entity "Mecanicas" as Mec {
+  +id_mecanica : int <<PK>>
+  nome_mecanica : varchar
+}
+
+entity "Jogos" as J {
+  +id_jogo : int <<PK>>
+  id_editora : int <<FK>>
+  titulo : varchar
+  descricao : text
+  ano_lancamento : int
+  min_jogadores : int
+  max_jogadores : int
+  tempo_medio_minutos : int
+  complexidade : numeric
+  preco_aluguel_base : numeric
+}
+
+entity "Exemplares" as Ex {
+  +id_exemplar : int <<PK>>
+  id_jogo : int <<FK>>
+  codigo_barras : varchar
+  estado_conservacao : varchar
+  status : varchar
+}
+
+entity "Jogo_Categoria" as JC {
+  id_jogo : int <<FK>>
+  id_categoria : int <<FK>>
+}
+
+entity "Jogo_Mecanica" as JM {
+  id_jogo : int <<FK>>
+  id_mecanica : int <<FK>>
+}
+
+entity "Jogo_Designer" as JD {
+  id_jogo : int <<FK>>
+  id_designer : int <<FK>>
+}
+
+entity "Alugueis" as Al {
+  +id_aluguel : int <<PK>>
+  id_exemplar : int <<FK>>
+  id_cliente : int <<FK>>
+  id_funcionario_emprestimo : int <<FK>>
+  data_aluguel : timestamp
+  data_devolucao_prevista : date
+  valor_cobrado : numeric
+}
+
+entity "Devolucoes" as Dev {
+  +id_devolucao : int <<PK>>
+  id_aluguel : int <<FK>>
+  id_funcionario_recebimento : int <<FK>>
+  data_devolucao_efetiva : timestamp
+  observacoes : text
+}
+
+entity "Multas" as Mu {
+  +id_multa : int <<PK>>
+  id_devolucao : int <<FK>>
+  valor_multa : numeric
+  motivo : varchar
+  paga : boolean
+}
+
+entity "Pagamentos" as Pg {
+  +id_pagamento : int <<PK>>
+  id_aluguel : int <<FK>>
+  id_multa : int <<FK>>
+  valor : numeric
+  data_pagamento : timestamp
+  metodo_pagamento : varchar
+}
+
+entity "Reservas" as R {
+  +id_reserva : int <<PK>>
+  id_jogo : int <<FK>>
+  id_cliente : int <<FK>>
+  data_reserva : timestamp
+  status : varchar
+}
+
+entity "Pontos_Fidelidade" as PF {
+  +id_ponto : int <<PK>>
+  id_cliente : int <<FK>>
+  pontos_ganhos : int
+  pontos_usados : int
+  id_aluguel_origem : int <<FK>>
+  data_transacao : timestamp
+}
+
+entity "Log_Alteracoes_Preco" as Log {
+  +id_log : int <<PK>>
+  id_jogo : int <<FK>>
+  preco_antigo : numeric
+  preco_novo : numeric
+  data_alteracao : timestamp
+  usuario_alteracao : varchar
+}
+
+entity "Historico_Aluguel_Negado" as HAN {
+  +id_negativa : int <<PK>>
+  id_cliente : int <<FK>>
+  id_exemplar : int <<FK>>
+  data_tentativa : timestamp
+  motivo : text
+}
+
+entity "Historico_Devolucao_Problematica" as HDP {
+  +id_problema : int <<PK>>
+  id_devolucao : int <<FK>>
+  tipo_problema : varchar
+  descricao_detalhada : text
+  valor_desconto_aplicado : numeric
+  data_registro : timestamp
+}
+
+' Relacionamentos com cardinalidades
+L ||--o{ F : "1:N"
+Cg ||--o{ F : "1:N"
+P ||--o{ Cl : "1:N"
+Cl ||--o{ E : "1:N"
+Cl ||--o{ T : "1:N"
+Cl ||--o{ Al : "1:N"
+Cl ||--o{ R : "1:N"
+Cl ||--o{ PF : "1:N"
+Ed ||--o{ J : "1:N"
+J ||--o{ Ex : "1:N"
+J ||--o{ JC : "1:N"
+J ||--o{ JM : "1:N"
+J ||--o{ JD : "1:N"
+Cat ||--o{ JC : "1:N"
+Mec ||--o{ JM : "1:N"
+D ||--o{ JD : "1:N"
+Ex ||--o{ Al : "1:N"
+Al ||--|| Dev : "1:1"
+Dev ||--o{ Mu : "1:N"
+Al ||--o{ Pg : "1:N"
+Mu ||--o{ Pg : "1:N"
+J ||--o{ R : "1:N"
+J ||--o{ Log : "1:N"
+Al ||--o{ PF : "1:N"
+Cl ||--o{ HAN : "1:N"
+Ex ||--o{ HAN : "1:N"
+Dev ||--o{ HDP : "1:N"
+
+@enduml 
