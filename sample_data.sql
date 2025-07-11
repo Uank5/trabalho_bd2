@@ -211,7 +211,7 @@ INSERT INTO Pagamentos (id_aluguel, id_multa, valor, data_pagamento, metodo_paga
 (12, NULL, 35.00, '2024-01-12 15:00:00', 'Cartão de Crédito'),
 (13, NULL, 20.00, '2024-01-13 09:45:00', 'Cartão de Débito'),
 (14, NULL, 18.00, '2024-01-14 17:15:00', 'Dinheiro'),
-(15, 15, 26.40, '2024-01-15 11:50:00', 'PIX'),
+(15, NULL, 22.00, '2024-01-15 11:50:00', 'PIX'),
 (16, NULL, 15.00, '2024-01-16 13:40:00', 'Cartão de Crédito'),
 (17, 17, 48.00, '2024-01-17 16:00:00', 'Cartão de Débito'),
 (18, NULL, 20.00, '2024-01-18 11:15:00', 'Dinheiro'),
