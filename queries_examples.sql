@@ -1,257 +1,95 @@
-SELECT * FROM vw_jogos_completos ORDER BY titulo;
-
-SELECT * FROM buscar_jogos_por_categoria('Estratégia');
-
-SELECT * FROM buscar_jogos_por_mecanica('Worker Placement');
-
-SELECT * FROM buscar_jogos_por_designer('Reiner Knizia');
-
-SELECT * FROM buscar_jogos_por_preco(15.00, 30.00);
-
-SELECT * FROM buscar_jogos_por_jogadores(4);
-
-SELECT * FROM buscar_jogos_por_tempo(60);
-
-SELECT * FROM buscar_jogos_por_complexidade(2.0, 3.0);
-
-SELECT * FROM verificar_disponibilidade_jogo(1);
-
-SELECT 
-    j.titulo,
-    e.codigo_barras,
-    e.status
-FROM Exemplares e
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-WHERE e.status = 'Disponível'
-ORDER BY j.titulo;
-
-SELECT * FROM vw_alugueis_detalhados 
-WHERE status_aluguel != 'Devolvido'
-ORDER BY data_aluguel DESC;
-
-SELECT * FROM vw_alugueis_detalhados 
-WHERE status_aluguel = 'Atrasado'
-ORDER BY data_devolucao_prevista;
-
-SELECT 
-    nome_cliente,
-    COUNT(*) as total_alugueis,
-    SUM(valor_cobrado) as valor_total
-FROM vw_alugueis_detalhados
-GROUP BY nome_cliente
-ORDER BY total_alugueis DESC;
-
-SELECT * FROM vw_devolucoes_detalhadas 
-WHERE status_devolucao = 'Atrasada'
-ORDER BY dias_atraso DESC;
-
-SELECT 
-    funcionario_devolucao,
-    COUNT(*) as total_devolucoes,
-    COUNT(CASE WHEN status_devolucao = 'Atrasada' THEN 1 END) as devolucoes_atrasadas
-FROM vw_devolucoes_detalhadas
-GROUP BY funcionario_devolucao
-ORDER BY total_devolucoes DESC;
-
-SELECT * FROM vw_multas_detalhadas 
-WHERE status_pagamento = 'Pendente'
-ORDER BY valor_multa DESC;
-
-SELECT 
-    nome_cliente,
-    COUNT(*) as total_multas,
-    SUM(valor_multa) as valor_total_multas
-FROM vw_multas_detalhadas
-GROUP BY nome_cliente
-ORDER BY valor_total_multas DESC;
-
-SELECT 
-    metodo_pagamento,
-    COUNT(*) as total_pagamentos,
-    SUM(valor) as valor_total
-FROM vw_pagamentos_detalhados
-GROUP BY metodo_pagamento
-ORDER BY valor_total DESC;
-
-SELECT 
-    DATE(data_pagamento) as data,
-    COUNT(*) as total_pagamentos,
-    SUM(valor) as valor_total
-FROM vw_pagamentos_detalhados
-WHERE data_pagamento >= CURRENT_DATE - INTERVAL '30 days'
-GROUP BY DATE(data_pagamento)
-ORDER BY data;
-
-SELECT * FROM vw_reservas_detalhadas 
-WHERE status = 'Ativa'
-ORDER BY data_reserva;
-
-SELECT 
-    titulo_jogo,
-    COUNT(*) as total_reservas,
-    COUNT(CASE WHEN status = 'Ativa' THEN 1 END) as reservas_ativas
-FROM vw_reservas_detalhadas
-GROUP BY titulo_jogo
-ORDER BY total_reservas DESC;
-
-SELECT * FROM vw_estatisticas_loja;
-
-SELECT * FROM vw_jogos_populares LIMIT 10;
-
-SELECT * FROM vw_clientes_historico 
-ORDER BY total_alugueis DESC;
-
-SELECT * FROM vw_log_alteracoes_preco 
-WHERE data_alteracao >= CURRENT_DATE - INTERVAL '30 days'
-ORDER BY data_alteracao DESC;
-
-SELECT 
-    titulo_jogo,
-    COUNT(*) as total_alteracoes,
-    AVG(percentual_alteracao) as media_alteracao
-FROM vw_log_alteracoes_preco
-GROUP BY titulo_jogo
-ORDER BY total_alteracoes DESC;
-
-SELECT 
-    nome_completo,
-    total_alugueis,
-    valor_total_alugueis,
-    valor_total_multas,
-    (valor_total_alugueis - valor_total_multas) as valor_liquido
-FROM vw_clientes_historico
-ORDER BY valor_liquido DESC
-LIMIT 5;
-
-SELECT 
-    j.titulo,
-    COUNT(a.id_aluguel) as total_alugueis,
-    AVG(a.valor_cobrado) as valor_medio,
-    COUNT(e2.id_exemplar) as total_exemplares,
-    ROUND((COUNT(a.id_aluguel) * AVG(a.valor_cobrado) / COUNT(e2.id_exemplar))::NUMERIC, 2) as rentabilidade_por_exemplar
+SELECT j.titulo, j.ano_lancamento, e.nome_editora, j.preco_aluguel_base
 FROM Jogos j
-LEFT JOIN Exemplares e2 ON j.id_jogo = e2.id_jogo
-LEFT JOIN Alugueis a ON e2.id_exemplar = a.id_exemplar
+JOIN Editoras e ON j.id_editora = e.id_editora
+WHERE j.ano_lancamento >= 2020
+ORDER BY j.ano_lancamento DESC;
+
+SELECT c.nome_completo, COUNT(a.id_aluguel) as total_alugueis
+FROM Clientes c
+LEFT JOIN Alugueis a ON c.id_cliente = a.id_cliente
+GROUP BY c.id_cliente, c.nome_completo
+HAVING COUNT(a.id_aluguel) > 0
+ORDER BY total_alugueis DESC;
+
+SELECT j.titulo, COUNT(e.id_exemplar) as total_exemplares,
+       COUNT(CASE WHEN e.status = 'Disponível' THEN 1 END) as disponiveis
+FROM Jogos j
+LEFT JOIN Exemplares e ON j.id_jogo = e.id_jogo
 GROUP BY j.id_jogo, j.titulo
-HAVING COUNT(e2.id_exemplar) > 0
-ORDER BY rentabilidade_por_exemplar DESC;
+ORDER BY total_exemplares DESC;
 
-SELECT 
-    EXTRACT(MONTH FROM a.data_aluguel) as mes,
-    COUNT(*) as total_alugueis,
-    SUM(a.valor_cobrado) as faturamento
-FROM Alugueis a
-WHERE a.data_aluguel >= CURRENT_DATE - INTERVAL '12 months'
-GROUP BY EXTRACT(MONTH FROM a.data_aluguel)
-ORDER BY mes;
+SELECT l.nome_loja, COUNT(f.id_funcionario) as total_funcionarios
+FROM Lojas l
+LEFT JOIN Funcionarios f ON l.id_loja = f.id_loja
+GROUP BY l.id_loja, l.nome_loja
+ORDER BY total_funcionarios DESC;
 
-SELECT 
-    j.titulo,
-    e.codigo_barras,
-    e.status
-FROM Exemplares e
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-WHERE e.status = 'Manutenção'
-ORDER BY j.titulo;
+SELECT j.titulo, j.complexidade, j.tempo_medio_minutos
+FROM Jogos j
+WHERE j.complexidade >= 3.0 AND j.tempo_medio_minutos <= 60
+ORDER BY j.complexidade DESC;
 
-SELECT 
-    j.titulo,
-    e.codigo_barras,
-    e.status
-FROM Exemplares e
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-WHERE e.status = 'Perdido'
-ORDER BY j.titulo;
+SELECT c.nome_categoria, COUNT(jc.id_jogo) as total_jogos
+FROM Categorias c
+LEFT JOIN Jogo_Categoria jc ON c.id_categoria = jc.id_categoria
+GROUP BY c.id_categoria, c.nome_categoria
+ORDER BY total_jogos DESC;
 
-SELECT 
-    f.nome_completo,
-    l.nome_loja,
-    COUNT(a.id_aluguel) as total_alugueis_processados
+SELECT f.nome_completo, l.nome_loja, COUNT(a.id_aluguel) as alugueis_processados
 FROM Funcionarios f
 JOIN Lojas l ON f.id_loja = l.id_loja
 LEFT JOIN Alugueis a ON f.id_funcionario = a.id_funcionario_emprestimo
 GROUP BY f.id_funcionario, f.nome_completo, l.nome_loja
-ORDER BY total_alugueis_processados DESC;
+ORDER BY alugueis_processados DESC;
 
-SELECT 
-    f.nome_completo,
-    l.nome_loja,
-    COUNT(d.id_devolucao) as total_devolucoes_processadas
-FROM Funcionarios f
-JOIN Lojas l ON f.id_loja = l.id_loja
-LEFT JOIN Devolucoes d ON f.id_funcionario = d.id_funcionario_recebimento
-GROUP BY f.id_funcionario, f.nome_completo, l.nome_loja
-ORDER BY total_devolucoes_processadas DESC;
-
-SELECT 
-    j.titulo,
-    STRING_AGG(DISTINCT c.nome_categoria, ', ' ORDER BY c.nome_categoria) as categorias,
-    STRING_AGG(DISTINCT m.nome_mecanica, ', ' ORDER BY m.nome_mecanica) as mecanicas,
-    STRING_AGG(DISTINCT d.nome_designer, ', ' ORDER BY d.nome_designer) as designers
+SELECT j.titulo, AVG(a.valor_cobrado) as valor_medio_aluguel
 FROM Jogos j
-LEFT JOIN Jogo_Categoria jc ON j.id_jogo = jc.id_jogo
-LEFT JOIN Categorias c ON jc.id_categoria = c.id_categoria
-LEFT JOIN Jogo_Mecanica jm ON j.id_jogo = jm.id_jogo
-LEFT JOIN Mecanicas m ON jm.id_mecanica = m.id_mecanica
-LEFT JOIN Jogo_Designer jd ON j.id_jogo = jd.id_jogo
-LEFT JOIN Designers d ON jd.id_designer = d.id_designer
+JOIN Exemplares e ON j.id_jogo = e.id_jogo
+JOIN Alugueis a ON e.id_exemplar = a.id_exemplar
 GROUP BY j.id_jogo, j.titulo
-ORDER BY j.titulo;
+HAVING AVG(a.valor_cobrado) > 50
+ORDER BY valor_medio_aluguel DESC;
 
-SELECT 
-    c.nome_completo,
-    j.titulo,
-    han.motivo,
-    han.data_tentativa
-FROM Historico_Aluguel_Negado han
-JOIN Clientes c ON han.id_cliente = c.id_cliente
-JOIN Exemplares e ON han.id_exemplar = e.id_exemplar
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-ORDER BY han.data_tentativa DESC;
+SELECT EXTRACT(YEAR FROM a.data_aluguel) as ano,
+       EXTRACT(MONTH FROM a.data_aluguel) as mes,
+       COUNT(a.id_aluguel) as total_alugueis,
+       SUM(a.valor_cobrado) as receita_total
+FROM Alugueis a
+GROUP BY EXTRACT(YEAR FROM a.data_aluguel), EXTRACT(MONTH FROM a.data_aluguel)
+ORDER BY ano DESC, mes DESC;
 
-SELECT 
-    j.titulo,
-    c.nome_completo,
-    hdp.tipo_problema,
-    hdp.descricao,
-    hdp.data_registro
-FROM Historico_Devolucao_Problematica hdp
-JOIN Devolucoes d ON hdp.id_devolucao = d.id_devolucao
-JOIN Alugueis a ON d.id_aluguel = a.id_aluguel
-JOIN Clientes c ON a.id_cliente = c.id_cliente
-JOIN Exemplares e ON a.id_exemplar = e.id_exemplar
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-ORDER BY hdp.data_registro DESC;
+SELECT c.nome_completo, COUNT(m.id_multa) as total_multas,
+       SUM(m.valor_multa) as valor_total_multas
+FROM Clientes c
+LEFT JOIN Alugueis a ON c.id_cliente = a.id_cliente
+LEFT JOIN Devolucoes d ON a.id_aluguel = d.id_aluguel
+LEFT JOIN Multas m ON d.id_devolucao = m.id_devolucao
+GROUP BY c.id_cliente, c.nome_completo
+HAVING COUNT(m.id_multa) > 0
+ORDER BY total_multas DESC;
 
-SELECT 
-    (SELECT COUNT(*) FROM Clientes) as total_clientes,
-    (SELECT COUNT(*) FROM Jogos) as total_jogos,
-    (SELECT COUNT(*) FROM Exemplares WHERE status = 'Disponível') as exemplares_disponiveis,
-    (SELECT COUNT(*) FROM Alugueis WHERE data_aluguel >= CURRENT_DATE - INTERVAL '30 days') as alugueis_ultimo_mes,
-    (SELECT COALESCE(SUM(valor_cobrado), 0) FROM Alugueis WHERE data_aluguel >= CURRENT_DATE - INTERVAL '30 days') as faturamento_ultimo_mes,
-    (SELECT COUNT(*) FROM Alugueis WHERE data_devolucao_prevista < CURRENT_DATE AND id_aluguel NOT IN (SELECT id_aluguel FROM Devolucoes)) as alugueis_atrasados;
+SELECT j.titulo, COUNT(a.id_aluguel) as total_alugueis,
+       COUNT(DISTINCT a.id_cliente) as clientes_unicos
+FROM Jogos j
+JOIN Exemplares e ON j.id_jogo = e.id_jogo
+JOIN Alugueis a ON e.id_exemplar = a.id_exemplar
+GROUP BY j.id_jogo, j.titulo
+ORDER BY total_alugueis DESC
+LIMIT 10;
 
-SELECT 
-    'Jogos por Complexidade' as categoria,
-    CASE 
-        WHEN complexidade < 2.0 THEN 'Iniciante'
-        WHEN complexidade < 3.0 THEN 'Intermediário'
-        WHEN complexidade < 4.0 THEN 'Avançado'
-        ELSE 'Expert'
-    END as nivel,
-    COUNT(*) as quantidade
-FROM Jogos
-GROUP BY 
-    CASE 
-        WHEN complexidade < 2.0 THEN 'Iniciante'
-        WHEN complexidade < 3.0 THEN 'Intermediário'
-        WHEN complexidade < 4.0 THEN 'Avançado'
-        ELSE 'Expert'
-    END
-ORDER BY 
-    CASE nivel
-        WHEN 'Iniciante' THEN 1
-        WHEN 'Intermediário' THEN 2
-        WHEN 'Avançado' THEN 3
-        WHEN 'Expert' THEN 4
-    END; 
+SELECT d.nome_designer, COUNT(jd.id_jogo) as total_jogos_designados
+FROM Designers d
+LEFT JOIN Jogo_Designer jd ON d.id_designer = jd.id_designer
+GROUP BY d.id_designer, d.nome_designer
+ORDER BY total_jogos_designados DESC;
+
+SELECT m.nome_mecanica, COUNT(jm.id_jogo) as total_jogos
+FROM Mecanicas m
+LEFT JOIN Jogo_Mecanica jm ON m.id_mecanica = jm.id_mecanica
+GROUP BY m.id_mecanica, m.nome_mecanica
+ORDER BY total_jogos DESC;
+
+SELECT j.titulo, j.min_jogadores, j.max_jogadores, j.tempo_medio_minutos
+FROM Jogos j
+WHERE j.min_jogadores <= 4 AND j.max_jogadores >= 4
+ORDER BY j.tempo_medio_minutos; 

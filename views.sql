@@ -117,53 +117,6 @@ JOIN Jogos j ON e.id_jogo = j.id_jogo
 JOIN Funcionarios f ON d.id_funcionario_recebimento = f.id_funcionario
 JOIN Lojas l ON f.id_loja = l.id_loja;
 
-CREATE OR REPLACE VIEW vw_pagamentos_detalhados AS
-SELECT 
-    p.id_pagamento,
-    p.valor,
-    p.data_pagamento,
-    p.metodo_pagamento,
-    CASE 
-        WHEN p.id_aluguel IS NOT NULL THEN 'Aluguel'
-        WHEN p.id_multa IS NOT NULL THEN 'Multa'
-    END as tipo_pagamento,
-    c.nome_completo as nome_cliente,
-    c.email as email_cliente,
-    j.titulo as titulo_jogo,
-    l.nome_loja
-FROM Pagamentos p
-LEFT JOIN Alugueis a ON p.id_aluguel = a.id_aluguel
-LEFT JOIN Multas m ON p.id_multa = m.id_multa
-LEFT JOIN Clientes c ON COALESCE(a.id_cliente, 
-    (SELECT a2.id_cliente FROM Alugueis a2 JOIN Devolucoes d2 ON a2.id_aluguel = d2.id_aluguel WHERE d2.id_devolucao = m.id_devolucao)) = c.id_cliente
-LEFT JOIN Exemplares e ON COALESCE(a.id_exemplar, 
-    (SELECT a2.id_exemplar FROM Alugueis a2 JOIN Devolucoes d2 ON a2.id_aluguel = d2.id_aluguel WHERE d2.id_devolucao = m.id_devolucao)) = e.id_exemplar
-LEFT JOIN Jogos j ON e.id_jogo = j.id_jogo
-LEFT JOIN Funcionarios f ON COALESCE(a.id_funcionario_emprestimo, 
-    (SELECT d2.id_funcionario_recebimento FROM Devolucoes d2 WHERE d2.id_devolucao = m.id_devolucao)) = f.id_funcionario
-LEFT JOIN Lojas l ON f.id_loja = l.id_loja;
-
-CREATE OR REPLACE VIEW vw_reservas_detalhadas AS
-SELECT 
-    r.id_reserva,
-    r.data_reserva,
-    r.status,
-    c.nome_completo as nome_cliente,
-    c.email as email_cliente,
-    c.telefone as telefone_cliente,
-    j.titulo as titulo_jogo,
-    j.preco_aluguel_base,
-    e.nome_editora,
-    COUNT(e2.id_exemplar) as total_exemplares,
-    COUNT(CASE WHEN e2.status = 'Disponível' THEN 1 END) as exemplares_disponiveis
-FROM Reservas r
-JOIN Clientes c ON r.id_cliente = c.id_cliente
-JOIN Jogos j ON r.id_jogo = j.id_jogo
-JOIN Editoras e ON j.id_editora = e.id_editora
-LEFT JOIN Exemplares e2 ON j.id_jogo = e2.id_jogo
-GROUP BY r.id_reserva, r.data_reserva, r.status, c.nome_completo, c.email, 
-         c.telefone, j.titulo, j.preco_aluguel_base, e.nome_editora;
-
 CREATE OR REPLACE VIEW vw_estatisticas_loja AS
 SELECT 
     l.id_loja,
@@ -201,44 +154,4 @@ LEFT JOIN Exemplares e2 ON j.id_jogo = e2.id_jogo
 LEFT JOIN Alugueis a ON e2.id_exemplar = a.id_exemplar
 LEFT JOIN Devolucoes d ON a.id_aluguel = d.id_aluguel
 GROUP BY j.id_jogo, j.titulo, e.nome_editora
-ORDER BY total_alugueis DESC;
-
-CREATE OR REPLACE VIEW vw_clientes_historico AS
-SELECT 
-    c.id_cliente,
-    c.nome_completo,
-    c.email,
-    c.telefone,
-    c.data_nascimento,
-    c.data_cadastro,
-    COUNT(a.id_aluguel) as total_alugueis,
-    COUNT(d.id_devolucao) as total_devolucoes,
-    COUNT(CASE WHEN d.data_devolucao_efetiva::DATE > a.data_devolucao_prevista THEN 1 END) as devolucoes_atrasadas,
-    COUNT(m.id_multa) as total_multas,
-    COALESCE(SUM(a.valor_cobrado), 0) as valor_total_alugueis,
-    COALESCE(SUM(m.valor_multa), 0) as valor_total_multas,
-    COUNT(r.id_reserva) as total_reservas,
-    COUNT(CASE WHEN r.status = 'Ativa' THEN 1 END) as reservas_ativas
-FROM Clientes c
-LEFT JOIN Alugueis a ON c.id_cliente = a.id_cliente
-LEFT JOIN Devolucoes d ON a.id_aluguel = d.id_aluguel
-LEFT JOIN Multas m ON d.id_devolucao = m.id_devolucao
-LEFT JOIN Reservas r ON c.id_cliente = r.id_cliente
-GROUP BY c.id_cliente, c.nome_completo, c.email, c.telefone, c.data_nascimento, c.data_cadastro;
-
-CREATE OR REPLACE VIEW vw_log_alteracoes_preco AS
-SELECT 
-    l.id_log,
-    j.titulo as titulo_jogo,
-    e.nome_editora,
-    l.preco_anterior,
-    l.preco_novo,
-    l.preco_novo - l.preco_anterior as diferenca,
-    ROUND(((l.preco_novo - l.preco_anterior) / l.preco_anterior * 100)::NUMERIC, 2) as percentual_alteracao,
-    l.data_alteracao,
-    f.nome_completo as funcionario_alteracao
-FROM Log_Alteracoes_Preco l
-JOIN Jogos j ON l.id_jogo = j.id_jogo
-JOIN Editoras e ON j.id_editora = e.id_editora
-LEFT JOIN Funcionarios f ON l.id_funcionario = f.id_funcionario
-ORDER BY l.data_alteracao DESC; 
+ORDER BY total_alugueis DESC; 
