@@ -1,5 +1,5 @@
 @startuml
-' Diagrama ER - Locadora de Jogos de Tabuleiro (Versão Aprimorada)
+' Modelo Conceitual - Locadora de Jogos de Tabuleiro
 
 entity "Lojas" as L {
   +id_loja : int <<PK>>

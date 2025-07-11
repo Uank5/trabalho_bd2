@@ -1,287 +1,258 @@
-# Locadora de Jogos de Tabuleiro - Banco de Dados
+# Projeto de Banco de Dados: Locadora de Jogos de Tabuleiro
 
-Este projeto implementa um sistema completo de banco de dados para uma locadora de jogos de tabuleiro, utilizando PostgreSQL com recursos avançados de performance, segurança e análise de dados.
+## 📋 Descrição
 
-## 📋 Características do Projeto
+Este projeto implementa um sistema completo de banco de dados para uma locadora de jogos de tabuleiro usando PostgreSQL. O sistema gerencia lojas, funcionários, clientes, jogos, alugueis, devoluções, multas e reservas.
 
-### ✅ Requisitos Obrigatórios Atendidos
-- **25 tabelas** (mínimo 15 requerido)
-- **8 funções/stored procedures** elaboradas (mínimo 5 requerido)
-- **8 triggers** sofisticados (mínimo 2 requerido)
-- **2 visões** otimizadas (mínimo 2 requerido)
-- **10 consultas complexas** com análises avançadas
-- **Índices otimizados** para todas as consultas
+## 🏗️ Arquitetura do Projeto
 
-### ✅ Itens Opcionais Implementados
-- **Sistema de permissões** com 5 roles diferentes
-- **Fragmentação de tabelas** (horizontal e vertical)
+O projeto está organizado seguindo as melhores práticas de organização de arquivos SQL:
 
-## 🚀 Funcionalidades Principais
-
-### Funções Elaboradas
-1. **`registrar_aluguel`** - Validações completas (limite de aluguéis, multas pendentes, desconto do plano)
-2. **`registrar_devolucao`** - Cálculo automático de multas por atraso e danos
-3. **`verificar_disponibilidade_jogo_detalhada`** - Informações completas de disponibilidade
-4. **`obter_saldo_pontos_detalhado`** - Sistema de fidelidade com níveis
-5. **`calcular_faturamento_periodo`** - Estatísticas por período (diário/semanal/mensal)
-6. **`recomendar_jogos_cliente`** - Sistema de recomendação inteligente
-7. **`relatorio_inadimplencia`** - Relatório completo de inadimplência
-8. **`aplicar_pagamento_multa_aprimorado`** - Pagamento com validações robustas
-
-### Triggers Sofisticados
-1. **Auditoria de operações críticas** - Log de todas as alterações
-2. **Atualização de estatísticas em tempo real** - Métricas automáticas
-3. **Notificação de devoluções atrasadas** - Alertas automáticos
-4. **Validação de integridade de dados** - Verificações robustas
-5. **Log de alterações de preço** - Auditoria de mudanças
-6. **Sistema de pontos de fidelidade** - Cálculo automático
-7. **Fragmentação automática** - Distribuição de dados
-8. **Validações de formato** - Email, CPF, datas
-
-### Consultas Complexas
-1. **Análise de tendências temporais** - Crescimento percentual
-2. **Ranking de clientes valiosos** - Categorização automática
-3. **Análise de sazonalidade** - Padrões temporais
-4. **Análise de inadimplência** - Níveis de risco
-5. **Performance de funcionários** - Avaliação automática
-6. **Comportamento por categoria** - Preferências dos clientes
-7. **Rentabilidade por jogo** - ROI e utilização
-8. **Tendências de complexidade** - Evolução temporal
-9. **Correlação de características** - Fatores de sucesso
-10. **Análise preditiva de demanda** - Previsões sazonais
-
-## 🛠️ Instalação e Configuração
-
-### Pré-requisitos
-- PostgreSQL 12 ou superior
-- Acesso de superusuário para criação de roles
-
-### Passo a Passo
-
-1. **Clone ou baixe os arquivos do projeto**
-   ```bash
-   # Se estiver usando git
-   git clone [url-do-repositorio]
-   cd trabalho_bd2
-   ```
-
-2. **Conecte ao PostgreSQL**
-   ```bash
-   psql -U postgres -d postgres
-   ```
-
-3. **Crie o banco de dados**
-   ```sql
-   CREATE DATABASE locadora_jogos;
-   \c locadora_jogos
-   ```
-
-4. **Execute o script principal**
-   ```bash
-   psql -U postgres -d locadora_jogos -f locadora_jogos.sql
-   ```
-
-5. **Verifique a instalação**
-   ```sql
-   -- Listar todas as tabelas criadas
-   \dt
-   
-   -- Listar todas as funções
-   \df
-   
-   -- Listar todos os triggers
-   \dft
-   ```
-
-## 👥 Sistema de Permissões
-
-O projeto implementa 5 roles com diferentes níveis de acesso:
-
-### 🔐 Roles Disponíveis
-1. **`gerente_locadora`** - Acesso total ao sistema
-2. **`funcionario_atendimento`** - Operações de aluguel e devolução
-3. **`funcionario_estoque`** - Gestão de jogos e exemplares
-4. **`analista_relatorios`** - Acesso somente leitura para relatórios
-5. **`cliente_web`** - Acesso limitado para consultas públicas
-
-### Como Usar os Roles
-```sql
--- Criar usuário e atribuir role
-CREATE USER joao_atendimento WITH PASSWORD 'senha123';
-GRANT funcionario_atendimento TO joao_atendimento;
-
--- Conectar com o usuário
-\c locadora_jogos joao_atendimento
-```
-
-## 📊 Exemplos de Uso
-
-### Registrar um Aluguel
-```sql
--- Exemplo: Cliente ID 1 aluga exemplar ID 5 por 3 dias
-SELECT registrar_aluguel(1, 5, 2, 3);
-```
-
-### Verificar Disponibilidade Detalhada
-```sql
--- Exemplo: Verificar disponibilidade do jogo ID 3
-SELECT * FROM verificar_disponibilidade_jogo_detalhada(3);
-```
-
-### Calcular Faturamento
-```sql
--- Exemplo: Faturamento dos últimos 30 dias
-SELECT * FROM calcular_faturamento_periodo(
-    CURRENT_DATE - INTERVAL '30 days',
-    CURRENT_DATE,
-    'diario'
-);
-```
-
-### Recomendar Jogos
-```sql
--- Exemplo: Recomendações para cliente ID 1
-SELECT * FROM recomendar_jogos_cliente(1, 5);
-```
-
-### Relatório de Inadimplência
-```sql
--- Exemplo: Clientes com atraso mínimo de 1 dia
-SELECT * FROM relatorio_inadimplencia(1);
-```
-
-## 📈 Consultas de Análise
-
-### Top 10 Jogos Mais Alugados
-```sql
-SELECT j.titulo, COUNT(a.id_aluguel) as total_alugueis
-FROM Alugueis a
-JOIN Exemplares e ON a.id_exemplar = e.id_exemplar
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-GROUP BY j.titulo
-ORDER BY total_alugueis DESC
-LIMIT 10;
-```
-
-### Clientes Premium
-```sql
-WITH clientes_valor AS (
-    SELECT 
-        c.nome_completo,
-        COUNT(a.id_aluguel) as total_alugueis,
-        SUM(a.valor_cobrado) as faturamento_total
-    FROM Clientes c
-    LEFT JOIN Alugueis a ON c.id_cliente = a.id_cliente
-    GROUP BY c.id_cliente, c.nome_completo
-)
-SELECT * FROM clientes_valor
-WHERE faturamento_total > 1000
-ORDER BY faturamento_total DESC;
-```
-
-## 🔧 Manutenção e Otimização
-
-### Índices Criados
-- Índices compostos para consultas de tendências
-- Índices específicos para análises de performance
-- Índices para análises preditivas
-- Índices para tabelas fragmentadas
-
-### Fragmentação
-- **Alugueis**: Fragmentação horizontal por ano
-- **Pagamentos**: Fragmentação horizontal por mês
-- **Clientes**: Fragmentação vertical (dados sensíveis separados)
-
-### Monitoramento
-```sql
--- Verificar estatísticas de uso
-SELECT schemaname, tablename, n_tup_ins, n_tup_upd, n_tup_del
-FROM pg_stat_user_tables
-ORDER BY n_tup_ins DESC;
-
--- Verificar tamanho das tabelas
-SELECT 
-    schemaname,
-    tablename,
-    pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size
-FROM pg_tables
-WHERE schemaname = 'public'
-ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
-```
-
-## 📝 Estrutura do Projeto
+### 📁 Estrutura de Arquivos
 
 ```
 trabalho_bd2/
-├── locadora_jogos.sql          # Script principal do banco
-├── modelo_conceitual.md        # Documentação do modelo conceitual
-├── modelo_conceitual_plantuml.txt  # Código PlantUML do diagrama ER
-└── README.md                   # Este arquivo
+├── schema.sql              # Criação das tabelas
+├── seed.sql                # Dados iniciais obrigatórios
+├── sample_data.sql         # Dados de exemplo para testes
+├── functions.sql           # Funções do banco de dados
+├── triggers.sql            # Triggers do banco de dados
+├── views.sql              # Views do banco de dados
+├── permissions.sql         # Permissões e roles
+├── setup_complete.sql     # Script completo de configuração
+├── locadora_jogos.sql     # Arquivo original (legado)
+├── modelo_conceitual.md   # Documentação do modelo conceitual
+├── modelo_conceitual_plantuml.txt  # Diagrama PlantUML
+└── README.md              # Este arquivo
 ```
 
-## 🎯 Funcionalidades Avançadas
+### 📊 Organização por Tipo de Operação
 
-### Sistema de Fidelidade
-- Pontos baseados no valor do aluguel
-- Níveis: Iniciante, Bronze, Prata, Ouro, Diamante
-- Bônus por pagamento em dia
+| Tipo de SQL | Arquivo | Descrição |
+|-------------|---------|-----------|
+| Criação de tabelas | `schema.sql` | Estrutura completa do banco |
+| Dados iniciais | `seed.sql` | Lojas, cargos, editoras, etc. |
+| Dados de exemplo | `sample_data.sql` | Dados para testes |
+| Consultas complexas | `functions.sql` | Funções de busca e cálculo |
+| Atualizações automáticas | `triggers.sql` | Triggers de validação e log |
+| Relatórios | `views.sql` | Views para consultas complexas |
+| Segurança | `permissions.sql` | Roles e permissões |
+| Configuração completa | `setup_complete.sql` | Script principal |
 
-### Auditoria Completa
-- Log de todas as operações críticas
-- Histórico de tentativas negadas
-- Rastreamento de alterações de preço
+## 🗄️ Modelo de Dados
 
-### Análises Preditivas
-- Tendências de demanda por período
-- Análise de sazonalidade
-- Recomendações personalizadas
+### Entidades Principais
 
-### Controle de Qualidade
-- Validações de integridade de dados
-- Verificação de formatos (email, CPF)
-- Bloqueio de clientes inadimplentes
+- **Lojas**: Gerenciamento de unidades físicas
+- **Funcionários**: Staff das lojas com diferentes cargos
+- **Clientes**: Cadastro de clientes com endereços
+- **Jogos**: Catálogo de jogos com metadados
+- **Exemplares**: Unidades físicas dos jogos
+- **Alugueis**: Registro de empréstimos
+- **Devoluções**: Controle de retornos
+- **Multas**: Penalidades por atrasos
+- **Reservas**: Sistema de reservas
 
-## 🚨 Troubleshooting
+### Relacionamentos
 
-### Problemas Comuns
+- **Muitos-para-Muitos**: Jogos ↔ Categorias, Jogos ↔ Mecânicas, Jogos ↔ Designers
+- **Um-para-Muitos**: Lojas → Funcionários, Clientes → Endereços, Jogos → Exemplares
+- **Transacionais**: Alugueis → Devoluções → Multas
 
-1. **Erro de permissão**
-   ```sql
-   -- Verificar permissões do usuário
-   \du
-   
-   -- Conceder permissões necessárias
-   GRANT [permissao] ON [tabela] TO [usuario];
-   ```
+## 🚀 Como Usar
 
-2. **Erro de função não encontrada**
-   ```sql
-   -- Verificar se as funções foram criadas
-   \df
-   
-   -- Recriar função específica
-   \i locadora_jogos.sql
-   ```
+### 1. Configuração Inicial
 
-3. **Performance lenta**
-   ```sql
-   -- Verificar uso de índices
-   EXPLAIN ANALYZE [sua_consulta];
-   
-   -- Verificar estatísticas
-   ANALYZE [tabela];
-   ```
+```bash
+# Criar container PostgreSQL
+docker run --name postgres-locadora -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=locadora_jogos -p 5432:5432 -d postgres:15
 
-## 📞 Suporte
+# Conectar ao banco
+psql -h localhost -U postgres -d locadora_jogos
+```
 
-Para dúvidas ou problemas:
-1. Verifique se todos os pré-requisitos estão atendidos
-2. Execute o script completo sem interrupções
-3. Verifique as permissões do usuário PostgreSQL
-4. Consulte os logs de erro do PostgreSQL
+### 2. Executar Configuração Completa
+
+```sql
+-- No psql, execute:
+\i setup_complete.sql
+```
+
+### 3. Executar Arquivos Individuais
+
+```sql
+-- Apenas schema
+\i schema.sql
+
+-- Apenas dados iniciais
+\i seed.sql
+
+-- Apenas dados de exemplo
+\i sample_data.sql
+
+-- Apenas funções
+\i functions.sql
+
+-- Apenas triggers
+\i triggers.sql
+
+-- Apenas views
+\i views.sql
+
+-- Apenas permissões
+\i permissions.sql
+```
+
+## 🔧 Funcionalidades
+
+### Funções Principais
+
+- `verificar_disponibilidade_jogo(id_jogo)`: Verifica exemplares disponíveis
+- `calcular_multa_atraso()`: Calcula multas por atraso
+- `buscar_jogos_por_categoria()`: Busca por categoria
+- `buscar_jogos_por_mecanica()`: Busca por mecânica
+- `buscar_jogos_por_designer()`: Busca por designer
+- `buscar_jogos_por_preco()`: Busca por faixa de preço
+- `buscar_jogos_por_jogadores()`: Busca por número de jogadores
+- `buscar_jogos_por_tempo()`: Busca por tempo de jogo
+- `buscar_jogos_por_complexidade()`: Busca por complexidade
+
+### Triggers Automáticos
+
+- **Validação de Aluguel**: Verifica disponibilidade do exemplar
+- **Atualização de Status**: Atualiza status do exemplar automaticamente
+- **Log de Alterações**: Registra mudanças de preço
+- **Notificação de Atrasos**: Detecta devoluções atrasadas
+- **Validação de Devolução**: Previne devoluções duplicadas
+- **Validação de Pagamento**: Verifica integridade dos pagamentos
+
+### Views para Relatórios
+
+- `vw_jogos_completos`: Informações completas dos jogos
+- `vw_alugueis_detalhados`: Detalhes dos alugueis
+- `vw_devolucoes_detalhadas`: Detalhes das devoluções
+- `vw_multas_detalhadas`: Informações de multas
+- `vw_pagamentos_detalhados`: Detalhes dos pagamentos
+- `vw_reservas_detalhadas`: Informações de reservas
+- `vw_estatisticas_loja`: Estatísticas por loja
+- `vw_jogos_populares`: Jogos mais alugados
+- `vw_clientes_historico`: Histórico dos clientes
+- `vw_log_alteracoes_preco`: Log de alterações de preço
+
+## 🔐 Segurança
+
+### Roles e Permissões
+
+- **gerente**: Acesso total ao sistema
+- **funcionario**: Operações de aluguel/devolução
+- **cliente**: Apenas consultas de jogos
+
+### Row Level Security (RLS)
+
+- Funcionários veem apenas dados de sua loja
+- Clientes veem apenas seus próprios dados
+- Políticas de segurança por tabela
+
+## 📈 Exemplos de Uso
+
+### Consultar Jogos Disponíveis
+
+```sql
+SELECT * FROM verificar_disponibilidade_jogo(1);
+```
+
+### Buscar Jogos por Categoria
+
+```sql
+SELECT * FROM buscar_jogos_por_categoria('Estratégia');
+```
+
+### Ver Relatório de Alugueis
+
+```sql
+SELECT * FROM vw_alugueis_detalhados;
+```
+
+### Ver Estatísticas da Loja
+
+```sql
+SELECT * FROM vw_estatisticas_loja;
+```
+
+## 🛠️ Manutenção
+
+### Adicionar Novo Jogo
+
+```sql
+-- 1. Inserir editora (se não existir)
+INSERT INTO Editoras (nome_editora) VALUES ('Nova Editora');
+
+-- 2. Inserir jogo
+INSERT INTO Jogos (id_editora, titulo, descricao, ano_lancamento, 
+                   min_jogadores, max_jogadores, tempo_medio_minutos, 
+                   complexidade, preco_aluguel_base)
+VALUES (1, 'Novo Jogo', 'Descrição...', 2024, 2, 4, 60, 2.5, 25.00);
+
+-- 3. Inserir exemplares
+INSERT INTO Exemplares (id_jogo, codigo_barras, status)
+VALUES (11, 'NOV001', 'Disponível');
+```
+
+### Registrar Aluguel
+
+```sql
+INSERT INTO Alugueis (id_exemplar, id_cliente, id_funcionario_emprestimo, 
+                     data_devolucao_prevista, valor_cobrado)
+VALUES (1, 1, 2, CURRENT_DATE + INTERVAL '7 days', 25.00);
+```
+
+### Registrar Devolução
+
+```sql
+INSERT INTO Devolucoes (id_aluguel, id_funcionario_recebimento, observacoes)
+VALUES (1, 2, 'Devolução em bom estado');
+```
+
+## 📊 Dados de Exemplo
+
+O sistema inclui dados de exemplo para testes:
+
+- **3 Lojas**: GameStore Centro, Shopping, Zona Sul
+- **3 Cargos**: Gerente, Atendente, Estoquista
+- **7 Funcionários**: Distribuídos pelas lojas
+- **8 Editoras**: Galápagos, Devir, Iello, etc.
+- **8 Designers**: Reiner Knizia, Uwe Rosenberg, etc.
+- **8 Categorias**: Estratégia, Família, Party, etc.
+- **8 Mecânicas**: Worker Placement, Deck Building, etc.
+- **10 Jogos**: Catan, Agricola, Ticket to Ride, etc.
+- **20 Exemplares**: Distribuídos entre os jogos
+- **8 Clientes**: Com endereços completos
+- **5 Alugueis**: Para demonstração
+- **5 Reservas**: Para demonstração
+
+## 🔄 Versionamento
+
+- **schema.sql**: Estrutura atual do banco
+- **locadora_jogos.sql**: Arquivo original (legado)
+- Todos os arquivos são versionados e podem ser modificados independentemente
+
+## 📝 Notas
+
+- O sistema usa PostgreSQL 15+
+- Todas as funções são escritas em PL/pgSQL
+- Triggers garantem integridade dos dados
+- Views facilitam consultas complexas
+- Roles garantem segurança adequada
+
+## 🤝 Contribuição
+
+Para modificar o projeto:
+
+1. Edite o arquivo específico (schema.sql, functions.sql, etc.)
+2. Teste as mudanças
+3. Execute `setup_complete.sql` para aplicar todas as mudanças
+4. Documente as alterações
 
 ---
 
-**Projeto desenvolvido com excelência, atendendo todos os requisitos obrigatórios e opcionais!** 🎉
-
-*Última atualização: Dezembro 2024* 
+**Desenvolvido para o curso de Banco de Dados 2** 
