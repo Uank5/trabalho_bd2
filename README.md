@@ -1,67 +1,27 @@
-# 🎲 Locadora de Jogos - Banco de Dados PostgreSQL
+#  Locadora de Jogos 
 
-Sistema completo de banco de dados para uma locadora de jogos de tabuleiro, desenvolvido em PostgreSQL com 21 tabelas e funcionalidades avançadas.
 
-## 📊 Requisitos Mínimos vs. Implementação
+##  Requisitos Mínimos vs. Implementação
 
-| Componente | Mínimo | Implementado | Status |
-|------------|--------|--------------|--------|
-| **Tabelas** | 15 | 21 | ✅ +6 |
-| **Funções** | 5 | 8 | ✅ +3 |
-| **Triggers** | 2 | 6 | ✅ +4 |
-| **Views** | 2 | 4 | ✅ +2 |
-| **Consultas** | 10 | 14 | ✅ +4 |
-
-## 🗂️ Estrutura do Projeto
+| Componente | Mínimo | Implementado | 
+|------------|--------|--------------|
+| **Tabelas** | 15 | 21 | 
+| **Funções** | 5 | 8 | 
+| **Triggers** | 2 | 6 | 
+| **Views** | 2 | 4 | 
+| **Consultas** | 10 | 14 | 
 
 ```
-trabalho_bd2/
-├── schema.sql              # Estrutura das tabelas (21 tabelas)
-├── seed.sql                # Dados iniciais (categorias, editoras, etc.)
-├── sample_data.sql         # Dados de exemplo
-├── functions.sql           # Funções armazenadas (8 funções)
-├── triggers.sql            # Triggers (6 triggers)
-├── views.sql              # Views (4 views)
-├── permissions.sql         # Permissões e RLS
-├── setup_complete.sql      # Script completo de setup
-├── queries_examples.sql    # Exemplos de consultas (14 consultas)
-├── modelo_conceitual_plantuml.txt  # Diagrama PlantUML
-└── README.md              # Este arquivo
-```
 
-## 🚀 Como Usar
-
-### 1. Usando Docker (Recomendado)
+## Como Usar Usando PostgreSQL Local
 
 ```bash
-# Criar container PostgreSQL
-docker run --name postgres-locadora -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=locadora_jogos -p 5432:5432 -d postgres:15
-
-# Executar script completo
-docker exec -i postgres-locadora psql -U postgres -d locadora_jogos < setup_complete.sql
-```
-
-### 2. Usando PostgreSQL Local
-
-```bash
-# Conectar ao PostgreSQL
 psql -U postgres -d locadora_jogos
 
-# Executar script completo
 \i setup_complete.sql
 ```
 
-### 3. Usando DBeaver
-
-1. Criar nova conexão PostgreSQL
-2. Host: `localhost`
-3. Port: `5432`
-4. Database: `locadora_jogos`
-5. Username: `postgres`
-6. Password: `123456`
-7. Executar `setup_complete.sql`
-
-## 📋 Estrutura do Banco
+##  Estrutura do Banco
 
 ### Tabelas Principais (21 total)
 
@@ -140,7 +100,7 @@ Consultas SQL demonstrando:
 - Análise temporal e geográfica
 - Relatórios de multas e pagamentos
 
-## 🔐 Segurança
+## Segurança
 
 ### Roles
 - **gerente** - Acesso total ao sistema
