@@ -14,5 +14,5 @@
 
 DO $$
 BEGIN
-    RAISE NOTICE 'Arquivos criados: schema.sql, seed.sql, sample_data.sql, functions.sql, triggers.sql, views.sql, permissions.sql';
+    RAISE NOTICE 'Arquivos criados';
 END $$; 
