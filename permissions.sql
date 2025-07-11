@@ -17,9 +17,7 @@ GRANT SELECT ON
     Jogo_Categoria, Jogo_Mecanica, Jogo_Designer,
     Multas, Log_Alteracoes_Preco, Historico_Aluguel_Negado, Historico_Devolucao_Problematica,
     vw_jogos_completos, vw_alugueis_detalhados, vw_devolucoes_detalhadas,
-    vw_multas_detalhadas, vw_pagamentos_detalhados, vw_reservas_detalhadas,
-    vw_estatisticas_loja, vw_jogos_populares, vw_clientes_historico,
-    vw_log_alteracoes_preco
+    vw_multas_detalhadas, vw_estatisticas_loja, vw_jogos_populares
 TO funcionario;
 
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO funcionario;
@@ -32,12 +30,13 @@ TO cliente;
 
 GRANT EXECUTE ON FUNCTION verificar_disponibilidade_jogo(INT) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_categoria(VARCHAR) TO funcionario, cliente;
-GRANT EXECUTE ON FUNCTION buscar_jogos_por_mecanica(VARCHAR) TO funcionario, cliente;
-GRANT EXECUTE ON FUNCTION buscar_jogos_por_designer(VARCHAR) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_preco(NUMERIC, NUMERIC) TO funcionario, cliente;
-GRANT EXECUTE ON FUNCTION buscar_jogos_por_jogadores(INT) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_tempo(INT) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_complexidade(NUMERIC, NUMERIC) TO funcionario, cliente;
+GRANT EXECUTE ON FUNCTION registrar_aluguel(INT, INT, INT, DATE, NUMERIC) TO funcionario;
+GRANT EXECUTE ON FUNCTION registrar_devolução(INT, INT, TEXT) TO funcionario;
+GRANT EXECUTE ON FUNCTION calcular_faturamento_periodo(DATE, DATE) TO funcionario, gerente;
+GRANT EXECUTE ON FUNCTION recomendar_jogos_clientes(INT) TO funcionario, cliente;
 
 GRANT EXECUTE ON FUNCTION calcular_multa_atraso(DATE, TIMESTAMP WITH TIME ZONE, NUMERIC) TO funcionario, gerente;
 

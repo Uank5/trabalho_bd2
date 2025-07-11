@@ -79,7 +79,7 @@ SELECT
     END as status_devolucao,
     CASE 
         WHEN d.data_devolucao_efetiva::DATE > a.data_devolucao_prevista 
-        THEN EXTRACT(DAY FROM (d.data_devolucao_efetiva::DATE - a.data_devolucao_prevista))
+        THEN EXTRACT(DAY FROM (d.data_devolucao_efetiva::DATE - a.data_devolucao_prevista)::INTERVAL)
         ELSE 0
     END as dias_atraso
 FROM Devolucoes d

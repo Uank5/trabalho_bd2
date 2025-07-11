@@ -1,5 +1,5 @@
 @startuml
-' Modelo Conceitual - Locadora de Jogos de Tabuleiro (Versão Simplificada)
+' Modelo Conceitual - Locadora de Jogos de Tabuleiro (Versão Completa)
 
 entity "Lojas" as L {
   +id_loja : int <<PK>>
@@ -32,6 +32,19 @@ entity "Clientes" as Cl {
   cpf : varchar
   data_nascimento : date
   data_cadastro : timestamp
+}
+
+entity "Enderecos_Cliente" as E {
+  +id_endereco : int <<PK>>
+  id_cliente : int <<FK>>
+  logradouro : varchar
+  numero : varchar
+  complemento : varchar
+  bairro : varchar
+  cidade : varchar
+  estado : char
+  cep : varchar
+  principal : boolean
 }
 
 entity "Editoras" as Ed {
@@ -141,11 +154,29 @@ entity "Log_Alteracoes_Preco" as Log {
   data_alteracao : timestamp
 }
 
+entity "Historico_Aluguel_Negado" as HAN {
+  +id_historico : int <<PK>>
+  id_cliente : int <<FK>>
+  id_exemplar : int <<FK>>
+  motivo : varchar
+  data_tentativa : timestamp
+}
+
+entity "Historico_Devolucao_Problematica" as HDP {
+  +id_historico : int <<PK>>
+  id_devolucao : int <<FK>>
+  tipo_problema : varchar
+  descricao : text
+  data_registro : timestamp
+}
+
 ' Relacionamentos com cardinalidades
 L ||--o{ F : "1:N"
 Cg ||--o{ F : "1:N"
+Cl ||--o{ E : "1:N"
 Cl ||--o{ Al : "1:N"
 Cl ||--o{ R : "1:N"
+Cl ||--o{ HAN : "1:N"
 Ed ||--o{ J : "1:N"
 J ||--o{ Ex : "1:N"
 J ||--o{ JC : "1:N"
@@ -156,8 +187,10 @@ Cat ||--o{ JC : "1:N"
 Mec ||--o{ JM : "1:N"
 D ||--o{ JD : "1:N"
 Ex ||--o{ Al : "1:N"
+Ex ||--o{ HAN : "1:N"
 Al ||--|| Dev : "1:1"
 Dev ||--o{ Mu : "1:N"
+Dev ||--o{ HDP : "1:N"
 Al ||--o{ Pg : "1:N"
 Mu ||--o{ Pg : "1:N"
 F ||--o{ Log : "1:N"

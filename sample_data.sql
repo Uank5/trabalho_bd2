@@ -17,7 +17,12 @@ INSERT INTO Jogos (id_editora, titulo, descricao, ano_lancamento, min_jogadores,
 (7, 'Terraforming Mars', 'Jogo de colonização de Marte', 2016, 1, 5, 180, 3.8, 40.00),
 (8, 'Azul', 'Jogo de colocação de azulejos', 2017, 2, 4, 45, 1.8, 20.00),
 (1, 'Splendor', 'Jogo de desenvolvimento de gemas', 2014, 2, 4, 30, 1.7, 18.00),
-(2, '7 Wonders', 'Jogo de construção de civilizações', 2010, 3, 7, 30, 2.2, 25.00);
+(2, '7 Wonders', 'Jogo de construção de civilizações', 2010, 3, 7, 30, 2.2, 25.00),
+(3, 'Dominion', 'Jogo de deck building', 2008, 2, 4, 30, 2.0, 22.00),
+(4, 'Carcassonne: Hunters and Gatherers', 'Expansão de Carcassonne', 2002, 2, 5, 45, 1.5, 18.00),
+(5, 'Pandemic Legacy', 'Versão cooperativa com evolução', 2015, 2, 4, 60, 2.8, 30.00),
+(6, 'Codenames: Pictures', 'Versão com imagens', 2016, 4, 8, 30, 1.2, 15.00),
+(7, 'Terraforming Mars: Prelude', 'Expansão de Terraforming Mars', 2018, 1, 5, 180, 3.8, 40.00);
 
 INSERT INTO Exemplares (id_jogo, codigo_barras, status) VALUES
 (1, 'CAT001', 'Disponível'),
@@ -39,7 +44,12 @@ INSERT INTO Exemplares (id_jogo, codigo_barras, status) VALUES
 (9, 'SPL001', 'Disponível'),
 (9, 'SPL002', 'Disponível'),
 (10, 'WON001', 'Disponível'),
-(10, 'WON002', 'Disponível');
+(10, 'WON002', 'Disponível'),
+(11, 'DOM001', 'Disponível'),
+(12, 'CAR003', 'Disponível'),
+(13, 'PAN003', 'Disponível'),
+(14, 'COD002', 'Disponível'),
+(15, 'TER002', 'Disponível');
 
 INSERT INTO Clientes (nome_completo, email, cpf, telefone, data_nascimento, data_cadastro) VALUES
 ('Fernando Almeida', 'fernando@email.com', '111.222.333-44', '(11) 9999-4444', '1985-03-15', '2023-01-10 10:00:00'),
@@ -49,7 +59,9 @@ INSERT INTO Clientes (nome_completo, email, cpf, telefone, data_nascimento, data
 ('Marcos Oliveira', 'marcos@email.com', '555.666.777-88', '(11) 9999-8888', '1987-09-12', '2023-02-20 11:20:00'),
 ('Carolina Lima', 'carolina@email.com', '666.777.888-99', '(11) 9999-9999', '1995-12-25', '2023-03-01 13:10:00'),
 ('Thiago Ferreira', 'thiago@email.com', '777.888.999-00', '(11) 9999-0000', '1991-06-18', '2023-03-10 15:30:00'),
-('Patricia Alves', 'patricia@email.com', '888.999.000-11', '(11) 9999-1111', '1989-01-03', '2023-03-15 10:45:00');
+('Patricia Alves', 'patricia@email.com', '888.999.000-11', '(11) 9999-1111', '1989-01-03', '2023-03-15 10:45:00'),
+('Roberto Mendes', 'roberto@email.com', '999.000.111-22', '(11) 9999-2222', '1986-05-20', '2023-04-01 08:30:00'),
+('Lucia Pereira', 'lucia@email.com', '000.111.222-33', '(11) 9999-3333', '1993-08-14', '2023-04-10 12:15:00');
 
 INSERT INTO Enderecos_Cliente (id_cliente, logradouro, numero, complemento, bairro, cidade, estado, cep, principal) VALUES
 (1, 'Rua das Palmeiras', '100', 'Apto 101', 'Vila Madalena', 'São Paulo', 'SP', '01234-567', true),
@@ -60,7 +72,9 @@ INSERT INTO Enderecos_Cliente (id_cliente, logradouro, numero, complemento, bair
 (5, 'Av. Paulista', '1000', 'Apto 1001', 'Bela Vista', 'São Paulo', 'SP', '01310-100', true),
 (6, 'Rua Harmonia', '400', 'Casa', 'Vila Madalena', 'São Paulo', 'SP', '05435-000', true),
 (7, 'Rua Cardeal Arcoverde', '250', 'Apto 505', 'Pinheiros', 'São Paulo', 'SP', '05407-000', true),
-(8, 'Rua Fradique Coutinho', '600', 'Apto 201', 'Vila Madalena', 'São Paulo', 'SP', '05416-000', true);
+(8, 'Rua Fradique Coutinho', '600', 'Apto 201', 'Vila Madalena', 'São Paulo', 'SP', '05416-000', true),
+(9, 'Rua dos Pinheiros', '750', 'Apto 303', 'Pinheiros', 'São Paulo', 'SP', '05422-000', true),
+(10, 'Av. Rebouças', '1200', 'Casa', 'Vila Madalena', 'São Paulo', 'SP', '05402-000', true);
 
 INSERT INTO Jogo_Categoria (id_jogo, id_categoria) VALUES
 (1, 1), (1, 5),
@@ -72,7 +86,12 @@ INSERT INTO Jogo_Categoria (id_jogo, id_categoria) VALUES
 (7, 1), (7, 5),
 (8, 2), (8, 5),
 (9, 2), (9, 5),
-(10, 1), (10, 5);
+(10, 1), (10, 5),
+(11, 1), (11, 5),
+(12, 2), (12, 5),
+(13, 4),
+(14, 3), (14, 7),
+(15, 1), (15, 5);
 
 INSERT INTO Jogo_Mecanica (id_jogo, id_mecanica) VALUES
 (1, 5), (1, 6),
@@ -84,7 +103,12 @@ INSERT INTO Jogo_Mecanica (id_jogo, id_mecanica) VALUES
 (7, 1), (7, 5),
 (8, 4), (8, 7),
 (9, 5), (9, 7),
-(10, 3), (10, 5);
+(10, 3), (10, 5),
+(11, 2), (11, 5),
+(12, 4), (12, 7),
+(13, 7),
+(14, 7), (14, 8),
+(15, 1), (15, 5);
 
 INSERT INTO Jogo_Designer (id_jogo, id_designer) VALUES
 (1, 1),
@@ -96,25 +120,161 @@ INSERT INTO Jogo_Designer (id_jogo, id_designer) VALUES
 (7, 7),
 (8, 8),
 (9, 1),
-(10, 2);
+(10, 2),
+(11, 3),
+(12, 4),
+(13, 5),
+(14, 6),
+(15, 7);
 
 INSERT INTO Alugueis (id_exemplar, id_cliente, id_funcionario_emprestimo, data_aluguel, data_devolucao_prevista, valor_cobrado) VALUES
-(3, 1, 2, CURRENT_TIMESTAMP, CURRENT_DATE + INTERVAL '7 days', 25.00),
-(11, 2, 2, CURRENT_TIMESTAMP, CURRENT_DATE + INTERVAL '7 days', 25.00),
-(13, 3, 2, CURRENT_TIMESTAMP, CURRENT_DATE + INTERVAL '7 days', 15.00),
-(15, 4, 2, CURRENT_TIMESTAMP, CURRENT_DATE + INTERVAL '7 days', 20.00),
-(17, 5, 2, CURRENT_TIMESTAMP, CURRENT_DATE + INTERVAL '7 days', 18.00);
+(1, 1, 2, '2024-01-01 10:00:00', '2024-01-08', 25.00),
+(3, 2, 2, '2024-01-02 14:30:00', '2024-01-09', 25.00),
+(5, 3, 2, '2024-01-03 09:15:00', '2024-01-10', 20.00),
+(7, 4, 2, '2024-01-04 16:45:00', '2024-01-11', 18.00),
+(9, 5, 2, '2024-01-05 11:20:00', '2024-01-12', 22.00),
+(11, 6, 2, '2024-01-06 13:10:00', '2024-01-13', 15.00),
+(13, 7, 2, '2024-01-07 15:30:00', '2024-01-14', 40.00),
+(15, 8, 2, '2024-01-08 10:45:00', '2024-01-15', 20.00),
+(17, 9, 2, '2024-01-09 08:30:00', '2024-01-16', 18.00),
+(19, 10, 2, '2024-01-10 12:15:00', '2024-01-17', 25.00),
+(2, 1, 2, '2024-01-11 10:00:00', '2024-01-18', 25.00),
+(4, 2, 2, '2024-01-12 14:30:00', '2024-01-19', 35.00),
+(6, 3, 2, '2024-01-13 09:15:00', '2024-01-20', 20.00),
+(8, 4, 2, '2024-01-14 16:45:00', '2024-01-21', 18.00),
+(10, 5, 2, '2024-01-15 11:20:00', '2024-01-22', 22.00),
+(12, 6, 2, '2024-01-16 13:10:00', '2024-01-23', 15.00),
+(14, 7, 2, '2024-01-17 15:30:00', '2024-01-24', 40.00),
+(16, 8, 2, '2024-01-18 10:45:00', '2024-01-25', 20.00),
+(18, 9, 2, '2024-01-19 08:30:00', '2024-01-26', 18.00),
+(20, 10, 2, '2024-01-20 12:15:00', '2024-01-27', 25.00),
+(21, 1, 2, '2024-01-21 10:00:00', '2024-01-28', 22.00),
+(22, 2, 2, '2024-01-22 14:30:00', '2024-01-29', 18.00),
+(23, 3, 2, '2024-01-23 09:15:00', '2024-01-30', 30.00),
+(24, 4, 2, '2024-01-24 16:45:00', '2024-01-31', 15.00),
+(25, 5, 2, '2024-01-25 11:20:00', '2024-02-01', 40.00);
+
+INSERT INTO Devolucoes (id_aluguel, id_funcionario_recebimento, data_devolucao_efetiva, observacoes) VALUES
+(1, 2, '2024-01-08 14:00:00', 'Devolução em bom estado'),
+(2, 2, '2024-01-09 16:30:00', 'Devolução em bom estado'),
+(3, 2, '2024-01-10 11:15:00', 'Devolução em bom estado'),
+(4, 2, '2024-01-11 18:45:00', 'Devolução em bom estado'),
+(5, 2, '2024-01-12 13:20:00', 'Devolução em bom estado'),
+(6, 2, '2024-01-13 15:10:00', 'Devolução em bom estado'),
+(7, 2, '2024-01-14 17:30:00', 'Devolução em bom estado'),
+(8, 2, '2024-01-15 12:45:00', 'Devolução em bom estado'),
+(9, 2, '2024-01-16 10:30:00', 'Devolução em bom estado'),
+(10, 2, '2024-01-17 14:15:00', 'Devolução em bom estado'),
+(11, 2, '2024-01-18 16:00:00', 'Devolução em bom estado'),
+(12, 2, '2024-01-19 18:30:00', 'Devolução em bom estado'),
+(13, 2, '2024-01-20 13:15:00', 'Devolução em bom estado'),
+(14, 2, '2024-01-21 19:45:00', 'Devolução em bom estado'),
+(15, 2, '2024-01-22 15:20:00', 'Devolução em bom estado'),
+(16, 2, '2024-01-23 17:10:00', 'Devolução em bom estado'),
+(17, 2, '2024-01-24 19:30:00', 'Devolução em bom estado'),
+(18, 2, '2024-01-25 14:45:00', 'Devolução em bom estado'),
+(19, 2, '2024-01-26 12:30:00', 'Devolução em bom estado'),
+(20, 2, '2024-01-27 16:15:00', 'Devolução em bom estado'),
+(21, 2, '2024-01-28 18:00:00', 'Devolução em bom estado'),
+(22, 2, '2024-01-29 20:30:00', 'Devolução em bom estado'),
+(23, 2, '2024-01-30 15:15:00', 'Devolução em bom estado'),
+(24, 2, '2024-01-31 21:45:00', 'Devolução em bom estado'),
+(25, 2, '2024-02-01 17:20:00', 'Devolução em bom estado');
+
+INSERT INTO Multas (id_devolucao, valor_multa, motivo, paga) VALUES
+(1, 5.00, 'Atraso na devolução', false),
+(3, 4.00, 'Atraso na devolução', true),
+(5, 4.40, 'Atraso na devolução', false),
+(7, 8.00, 'Atraso na devolução', true),
+(9, 3.60, 'Atraso na devolução', false),
+(11, 5.50, 'Atraso na devolução', true),
+(13, 4.00, 'Atraso na devolução', false),
+(15, 4.40, 'Atraso na devolução', true),
+(17, 8.00, 'Atraso na devolução', false),
+(19, 3.60, 'Atraso na devolução', true),
+(21, 5.50, 'Atraso na devolução', false),
+(23, 6.00, 'Atraso na devolução', true),
+(25, 8.00, 'Atraso na devolução', false);
+
+INSERT INTO Pagamentos (id_aluguel, id_multa, valor, data_pagamento, metodo_pagamento) VALUES
+(1, NULL, 25.00, '2024-01-01 10:30:00', 'Cartão de Crédito'),
+(2, NULL, 25.00, '2024-01-02 15:00:00', 'Dinheiro'),
+(3, 3, 24.00, '2024-01-03 09:45:00', 'PIX'),
+(4, NULL, 18.00, '2024-01-04 17:15:00', 'Cartão de Débito'),
+(5, NULL, 22.00, '2024-01-05 11:50:00', 'Cartão de Crédito'),
+(6, NULL, 15.00, '2024-01-06 13:40:00', 'Dinheiro'),
+(7, 7, 48.00, '2024-01-07 16:00:00', 'PIX'),
+(8, NULL, 20.00, '2024-01-08 11:15:00', 'Cartão de Débito'),
+(9, NULL, 18.00, '2024-01-09 08:50:00', 'Cartão de Crédito'),
+(10, NULL, 25.00, '2024-01-10 12:45:00', 'Dinheiro'),
+(11, NULL, 25.00, '2024-01-11 10:30:00', 'PIX'),
+(12, NULL, 35.00, '2024-01-12 15:00:00', 'Cartão de Crédito'),
+(13, NULL, 20.00, '2024-01-13 09:45:00', 'Cartão de Débito'),
+(14, NULL, 18.00, '2024-01-14 17:15:00', 'Dinheiro'),
+(15, 15, 26.40, '2024-01-15 11:50:00', 'PIX'),
+(16, NULL, 15.00, '2024-01-16 13:40:00', 'Cartão de Crédito'),
+(17, 17, 48.00, '2024-01-17 16:00:00', 'Cartão de Débito'),
+(18, NULL, 20.00, '2024-01-18 11:15:00', 'Dinheiro'),
+(19, NULL, 18.00, '2024-01-19 08:50:00', 'PIX'),
+(20, NULL, 25.00, '2024-01-20 12:45:00', 'Cartão de Crédito'),
+(21, NULL, 22.00, '2024-01-21 10:30:00', 'Cartão de Débito'),
+(22, NULL, 18.00, '2024-01-22 15:00:00', 'Dinheiro'),
+(23, 23, 36.00, '2024-01-23 09:45:00', 'PIX'),
+(24, NULL, 15.00, '2024-01-24 17:15:00', 'Cartão de Crédito'),
+(25, 25, 48.00, '2024-01-25 11:50:00', 'Cartão de Débito');
 
 INSERT INTO Reservas (id_jogo, id_cliente, data_reserva, status) VALUES
-(1, 1, CURRENT_TIMESTAMP, 'Ativa'),
-(3, 2, CURRENT_TIMESTAMP, 'Ativa'),
-(5, 3, CURRENT_TIMESTAMP, 'Ativa'),
-(7, 4, CURRENT_TIMESTAMP, 'Cancelada'),
-(9, 5, CURRENT_TIMESTAMP, 'Ativa');
+(1, 1, '2024-01-01 10:00:00', 'Ativa'),
+(3, 2, '2024-01-02 14:30:00', 'Ativa'),
+(5, 3, '2024-01-03 09:15:00', 'Ativa'),
+(7, 4, '2024-01-04 16:45:00', 'Cancelada'),
+(9, 5, '2024-01-05 11:20:00', 'Ativa'),
+(11, 6, '2024-01-06 13:10:00', 'Ativa'),
+(13, 7, '2024-01-07 15:30:00', 'Cancelada'),
+(15, 8, '2024-01-08 10:45:00', 'Ativa'),
+(2, 9, '2024-01-09 08:30:00', 'Ativa'),
+(4, 10, '2024-01-10 12:15:00', 'Ativa');
+
+INSERT INTO Historico_Aluguel_Negado (id_cliente, id_exemplar, motivo, data_tentativa) VALUES
+(1, 1, 'Exemplar não disponível', '2024-01-01 09:00:00'),
+(2, 3, 'Cliente com multa pendente', '2024-01-02 13:30:00'),
+(3, 5, 'Exemplar em manutenção', '2024-01-03 08:15:00'),
+(4, 7, 'Cliente sem documento', '2024-01-04 15:45:00'),
+(5, 9, 'Exemplar reservado', '2024-01-05 10:20:00'),
+(6, 11, 'Cliente com limite excedido', '2024-01-06 12:10:00'),
+(7, 13, 'Exemplar perdido', '2024-01-07 14:30:00'),
+(8, 15, 'Cliente inadimplente', '2024-01-08 09:45:00'),
+(9, 17, 'Exemplar danificado', '2024-01-09 07:30:00'),
+(10, 19, 'Cliente sem cadastro ativo', '2024-01-10 11:15:00');
+
+INSERT INTO Historico_Devolucao_Problematica (id_devolucao, tipo_problema, descricao, data_registro) VALUES
+(1, 'Atraso', 'Devolução com 2 dias de atraso', '2024-01-08 14:00:00'),
+(3, 'Danos', 'Peças faltando no jogo', '2024-01-10 11:15:00'),
+(5, 'Atraso', 'Devolução com 1 dia de atraso', '2024-01-12 13:20:00'),
+(7, 'Danos', 'Caixa danificada', '2024-01-14 17:30:00'),
+(9, 'Atraso', 'Devolução com 3 dias de atraso', '2024-01-16 10:30:00'),
+(11, 'Danos', 'Manual rasgado', '2024-01-18 16:00:00'),
+(13, 'Atraso', 'Devolução com 1 dia de atraso', '2024-01-20 13:15:00'),
+(15, 'Danos', 'Peças quebradas', '2024-01-22 15:20:00'),
+(17, 'Atraso', 'Devolução com 2 dias de atraso', '2024-01-24 19:30:00'),
+(19, 'Danos', 'Tabuleiro riscado', '2024-01-26 12:30:00'),
+(21, 'Atraso', 'Devolução com 1 dia de atraso', '2024-01-28 18:00:00'),
+(23, 'Danos', 'Cartas faltando', '2024-01-30 15:15:00'),
+(25, 'Atraso', 'Devolução com 3 dias de atraso', '2024-01-31 21:45:00');
 
 INSERT INTO Log_Alteracoes_Preco (id_jogo, preco_anterior, preco_novo, data_alteracao, id_funcionario) VALUES
 (1, 20.00, 25.00, '2024-01-01 10:00:00', 1),
 (2, 30.00, 35.00, '2024-01-15 14:30:00', 1),
 (3, 18.00, 20.00, '2024-02-01 09:15:00', 1),
 (4, 15.00, 18.00, '2024-02-10 16:45:00', 1),
-(5, 20.00, 22.00, '2024-02-20 11:30:00', 1); 
+(5, 20.00, 22.00, '2024-02-20 11:30:00', 1),
+(6, 12.00, 15.00, '2024-03-01 08:00:00', 1),
+(7, 35.00, 40.00, '2024-03-15 13:45:00', 1),
+(8, 18.00, 20.00, '2024-04-01 10:30:00', 1),
+(9, 15.00, 18.00, '2024-04-15 15:20:00', 1),
+(10, 22.00, 25.00, '2024-05-01 09:00:00', 1),
+(11, 20.00, 22.00, '2024-05-15 14:15:00', 1),
+(12, 15.00, 18.00, '2024-06-01 11:30:00', 1),
+(13, 25.00, 30.00, '2024-06-15 16:45:00', 1),
+(14, 12.00, 15.00, '2024-07-01 08:30:00', 1),
+(15, 35.00, 40.00, '2024-07-15 13:20:00', 1); 
