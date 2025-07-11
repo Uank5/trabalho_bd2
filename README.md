@@ -7,9 +7,9 @@ Sistema completo de banco de dados para uma locadora de jogos de tabuleiro, dese
 | Componente | Mínimo | Implementado | Status |
 |------------|--------|--------------|--------|
 | **Tabelas** | 15 | 21 | ✅ +6 |
-| **Funções** | 5 | 9 | ✅ +4 |
+| **Funções** | 5 | 8 | ✅ +3 |
 | **Triggers** | 2 | 6 | ✅ +4 |
-| **Views** | 2 | 6 | ✅ +4 |
+| **Views** | 2 | 4 | ✅ +2 |
 | **Consultas** | 10 | 14 | ✅ +4 |
 
 ## 🗂️ Estrutura do Projeto
@@ -19,9 +19,9 @@ trabalho_bd2/
 ├── schema.sql              # Estrutura das tabelas (21 tabelas)
 ├── seed.sql                # Dados iniciais (categorias, editoras, etc.)
 ├── sample_data.sql         # Dados de exemplo
-├── functions.sql           # Funções armazenadas (9 funções)
+├── functions.sql           # Funções armazenadas (8 funções)
 ├── triggers.sql            # Triggers (6 triggers)
-├── views.sql              # Views (6 views)
+├── views.sql              # Views (4 views)
 ├── permissions.sql         # Permissões e RLS
 ├── setup_complete.sql      # Script completo de setup
 ├── queries_examples.sql    # Exemplos de consultas (14 consultas)
@@ -97,22 +97,21 @@ psql -U postgres -d locadora_jogos
 - **Historico_Aluguel_Negado** - Histórico de aluguéis negados
 - **Historico_Devolucao_Problematica** - Histórico de devoluções problemáticas
 
-### Funções (9 total)
+### Funções (8 total)
 
-#### Funções de Busca (5 funções)
+#### Funções de Busca (4 funções)
 1. `verificar_disponibilidade_jogo(p_id_jogo)` - Verifica disponibilidade de exemplares
 2. `buscar_jogos_por_categoria(p_nome_categoria)` - Busca jogos por categoria
 3. `buscar_jogos_por_preco(p_preco_minimo, p_preco_maximo)` - Busca por faixa de preço
-4. `buscar_jogos_por_tempo(p_tempo_maximo_minutos)` - Busca por tempo de jogo
-5. `buscar_jogos_por_complexidade(p_complexidade_minima, p_complexidade_maxima)` - Busca por complexidade
+4. `buscar_jogos_por_complexidade(p_complexidade_minima, p_complexidade_maxima)` - Busca por complexidade
 
 #### Funções de Operação (2 funções)
-6. `registrar_aluguel(p_id_exemplar, p_id_cliente, p_id_funcionario, p_data_devolucao_prevista, p_valor_cobrado)` - Registra novo aluguel
-7. `registrar_devolução(p_id_aluguel, p_id_funcionario, p_observacoes)` - Registra devolução
+5. `registrar_aluguel(p_id_exemplar, p_id_cliente, p_id_funcionario, p_data_devolucao_prevista, p_valor_cobrado)` - Registra novo aluguel
+6. `registrar_devolução(p_id_aluguel, p_id_funcionario, p_observacoes)` - Registra devolução
 
 #### Funções de Relatório (2 funções)
-8. `calcular_faturamento_periodo(p_data_inicio, p_data_fim)` - Calcula faturamento do período
-9. `recomendar_jogos_clientes(p_id_cliente)` - Sistema de recomendação
+7. `calcular_faturamento_periodo(p_data_inicio, p_data_fim)` - Calcula faturamento do período
+8. `recomendar_jogos_clientes(p_id_cliente)` - Sistema de recomendação
 
 ### Triggers (6 total)
 
@@ -123,14 +122,12 @@ psql -U postgres -d locadora_jogos
 5. `tg_validar_devolucao` - Valida devolução
 6. `tg_calcular_multa_automatica` - Calcula multa automaticamente
 
-### Views (6 total)
+### Views (4 total)
 
 1. `vw_jogos_completos` - Informações completas dos jogos
 2. `vw_alugueis_detalhados` - Detalhes dos aluguéis
-3. `vw_devolucoes_detalhadas` - Detalhes das devoluções
-4. `vw_multas_detalhadas` - Detalhes das multas
-5. `vw_estatisticas_loja` - Estatísticas por loja
-6. `vw_jogos_populares` - Jogos mais populares
+3. `vw_estatisticas_loja` - Estatísticas por loja
+4. `vw_jogos_populares` - Jogos mais populares
 
 ### Consultas de Exemplo (14 total)
 
@@ -275,9 +272,9 @@ O projeto inclui um diagrama PlantUML completo em `modelo_conceitual_plantuml.tx
 ## 📊 Estatísticas do Projeto
 
 - **21 Tabelas** - Estrutura completa do domínio
-- **9 Funções** - Lógica de negócio implementada
+- **8 Funções** - Lógica de negócio implementada
 - **6 Triggers** - Validações e auditoria automática
-- **6 Views** - Relatórios e consultas complexas
+- **4 Views** - Relatórios e consultas complexas
 - **14 Consultas** - Exemplos práticos de uso
 - **3 Roles** - Controle de acesso
 - **RLS Ativo** - Segurança em nível de linha

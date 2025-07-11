@@ -16,8 +16,8 @@ GRANT SELECT ON
     Categorias, Mecanicas, Designers, Editoras,
     Jogo_Categoria, Jogo_Mecanica, Jogo_Designer,
     Multas, Log_Alteracoes_Preco, Historico_Aluguel_Negado, Historico_Devolucao_Problematica,
-    vw_jogos_completos, vw_alugueis_detalhados, vw_devolucoes_detalhadas,
-    vw_multas_detalhadas, vw_estatisticas_loja, vw_jogos_populares
+    vw_jogos_completos, vw_alugueis_detalhados,
+    vw_estatisticas_loja, vw_jogos_populares
 TO funcionario;
 
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO funcionario;
@@ -31,7 +31,6 @@ TO cliente;
 GRANT EXECUTE ON FUNCTION verificar_disponibilidade_jogo(INT) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_categoria(VARCHAR) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_preco(NUMERIC, NUMERIC) TO funcionario, cliente;
-GRANT EXECUTE ON FUNCTION buscar_jogos_por_tempo(INT) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION buscar_jogos_por_complexidade(NUMERIC, NUMERIC) TO funcionario, cliente;
 GRANT EXECUTE ON FUNCTION registrar_aluguel(INT, INT, INT, DATE, NUMERIC) TO funcionario;
 GRANT EXECUTE ON FUNCTION registrar_devolução(INT, INT, TEXT) TO funcionario;

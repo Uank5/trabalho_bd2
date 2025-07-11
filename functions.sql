@@ -118,41 +118,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION buscar_jogos_por_tempo(
-    p_tempo_maximo_minutos INT
-)
-RETURNS TABLE (
-    id_jogo INT,
-    titulo VARCHAR(150),
-    descricao TEXT,
-    ano_lancamento INT,
-    min_jogadores INT,
-    max_jogadores INT,
-    tempo_medio_minutos INT,
-    complexidade NUMERIC(3, 1),
-    preco_aluguel_base NUMERIC(8, 2),
-    nome_editora VARCHAR(100)
-) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        j.id_jogo,
-        j.titulo,
-        j.descricao,
-        j.ano_lancamento,
-        j.min_jogadores,
-        j.max_jogadores,
-        j.tempo_medio_minutos,
-        j.complexidade,
-        j.preco_aluguel_base,
-        e.nome_editora
-    FROM Jogos j
-    JOIN Editoras e ON j.id_editora = e.id_editora
-    WHERE j.tempo_medio_minutos <= p_tempo_maximo_minutos
-    ORDER BY j.tempo_medio_minutos;
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION buscar_jogos_por_complexidade(
     p_complexidade_minima NUMERIC(3, 1),
     p_complexidade_maxima NUMERIC(3, 1)

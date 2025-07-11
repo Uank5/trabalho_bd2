@@ -58,65 +58,6 @@ JOIN Exemplares e ON a.id_exemplar = e.id_exemplar
 JOIN Jogos j ON e.id_jogo = j.id_jogo
 LEFT JOIN Devolucoes d ON a.id_aluguel = d.id_aluguel;
 
-CREATE OR REPLACE VIEW vw_devolucoes_detalhadas AS
-SELECT 
-    d.id_devolucao,
-    d.data_devolucao_efetiva,
-    d.observacoes,
-    a.data_aluguel,
-    a.data_devolucao_prevista,
-    a.valor_cobrado,
-    c.nome_completo as nome_cliente,
-    c.email as email_cliente,
-    f_emprestimo.nome_completo as funcionario_emprestimo,
-    f_devolucao.nome_completo as funcionario_devolucao,
-    j.titulo as titulo_jogo,
-    e.codigo_barras,
-    l.nome_loja,
-    CASE 
-        WHEN d.data_devolucao_efetiva::DATE > a.data_devolucao_prevista THEN 'Atrasada'
-        ELSE 'No prazo'
-    END as status_devolucao,
-    CASE 
-        WHEN d.data_devolucao_efetiva::DATE > a.data_devolucao_prevista 
-        THEN EXTRACT(DAY FROM (d.data_devolucao_efetiva::DATE - a.data_devolucao_prevista)::INTERVAL)
-        ELSE 0
-    END as dias_atraso
-FROM Devolucoes d
-JOIN Alugueis a ON d.id_aluguel = a.id_aluguel
-JOIN Clientes c ON a.id_cliente = c.id_cliente
-JOIN Funcionarios f_emprestimo ON a.id_funcionario_emprestimo = f_emprestimo.id_funcionario
-JOIN Funcionarios f_devolucao ON d.id_funcionario_recebimento = f_devolucao.id_funcionario
-JOIN Exemplares e ON a.id_exemplar = e.id_exemplar
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-JOIN Lojas l ON f_devolucao.id_loja = l.id_loja;
-
-CREATE OR REPLACE VIEW vw_multas_detalhadas AS
-SELECT 
-    m.id_multa,
-    m.valor_multa,
-    m.motivo,
-    m.paga,
-    d.data_devolucao_efetiva,
-    a.data_devolucao_prevista,
-    a.valor_cobrado,
-    c.nome_completo as nome_cliente,
-    c.email as email_cliente,
-    j.titulo as titulo_jogo,
-    l.nome_loja,
-    CASE 
-        WHEN m.paga THEN 'Paga'
-        ELSE 'Pendente'
-    END as status_pagamento
-FROM Multas m
-JOIN Devolucoes d ON m.id_devolucao = d.id_devolucao
-JOIN Alugueis a ON d.id_aluguel = a.id_aluguel
-JOIN Clientes c ON a.id_cliente = c.id_cliente
-JOIN Exemplares e ON a.id_exemplar = e.id_exemplar
-JOIN Jogos j ON e.id_jogo = j.id_jogo
-JOIN Funcionarios f ON d.id_funcionario_recebimento = f.id_funcionario
-JOIN Lojas l ON f.id_loja = l.id_loja;
-
 CREATE OR REPLACE VIEW vw_estatisticas_loja AS
 SELECT 
     l.id_loja,
