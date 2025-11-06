@@ -129,7 +129,7 @@ Consultas SQL demonstrando:
 - Separação de responsabilidades
 - Auditoria de operações
 
-## 🎯 Funcionalidades Principais
+## Funcionalidades Principais
 
 ### Gestão de Jogos
 - Cadastro completo de jogos com metadados
@@ -193,7 +193,7 @@ JOIN information_schema.constraint_column_usage AS ccu
 WHERE constraint_type = 'FOREIGN KEY';
 ```
 
-## 📝 Exemplos de Uso
+##  Exemplos de Uso
 
 ### Registrar Aluguel
 ```sql
@@ -221,7 +221,7 @@ SELECT * FROM vw_jogos_populares LIMIT 10;
 SELECT * FROM vw_estatisticas_loja;
 ```
 
-## 🎨 Modelo Conceitual
+##  Modelo Conceitual
 
 O projeto inclui um diagrama PlantUML completo em `modelo_conceitual_plantuml.txt` que representa:
 - 21 entidades principais
@@ -229,7 +229,7 @@ O projeto inclui um diagrama PlantUML completo em `modelo_conceitual_plantuml.tx
 - Chaves primárias e estrangeiras
 - Atributos de cada entidade
 
-## 📊 Estatísticas do Projeto
+##  Estatísticas do Projeto
 
 - **21 Tabelas** - Estrutura completa do domínio
 - **8 Funções** - Lógica de negócio implementada
@@ -239,7 +239,7 @@ O projeto inclui um diagrama PlantUML completo em `modelo_conceitual_plantuml.tx
 - **3 Roles** - Controle de acesso
 - **RLS Ativo** - Segurança em nível de linha
 
-## 🚀 Tecnologias
+##  Tecnologias
 
 - **PostgreSQL 15+** - Banco de dados principal
 - **PL/pgSQL** - Linguagem de programação
@@ -247,7 +247,7 @@ O projeto inclui um diagrama PlantUML completo em `modelo_conceitual_plantuml.tx
 - **PlantUML** - Diagramação
 - **DBeaver** - Interface gráfica
 
-## 📝 Notas
+##  Notas
 
 - Todos os scripts estão sem comentários conforme solicitado
 - Estrutura modular para fácil manutenção
